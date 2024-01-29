@@ -28,7 +28,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
    }
     
        String getWeatherAnimation(String? mainCondition){
-      if (mainCondition == null ) return 'assets/images/suuny.json';
+      if (mainCondition == null ) return 'assets/images/sun`ny.json';
 
       switch (mainCondition.toLowerCase()) {
         case 'clouds':
