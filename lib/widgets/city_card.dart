@@ -7,7 +7,7 @@ class CityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(7),
+      padding: const EdgeInsets.all(7),
       alignment: Alignment.center,
       decoration: const BoxDecoration(
         color: Colors.transparent,
@@ -23,7 +23,7 @@ class CityCard extends StatelessWidget {
       ),
       child: Text(
         cityName,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 19,
         ),

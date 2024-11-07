@@ -23,6 +23,31 @@ class WeatherService {
     }
   }
 
+//  hourly forecast
+  Future<List<WeatherModel>> getHourlyForecast(
+      double latitude, double longitude) async {
+    final url = Uri.parse(
+      '$BASE_URL?lat=$latitude&lon=$longitude&exclude=current,minutely,daily,alerts&units=metric&appid=$apiKey',
+    );
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        // Parse the hourly weather data
+        final Map<String, dynamic> data = json.decode(response.body);
+        final List<dynamic> hourlyData = data['hourly'];
+
+        // Convert the hourly data to a list of HourlyWeather models
+        return hourlyData.map((hour) => WeatherModel.fromJson(hour)).toList();
+      } else {
+        throw Exception('Failed to load hourly weather data');
+      }
+    } catch (e) {
+      throw Exception('Error fetching hourly weather data: $e');
+    }
+  }
+
   Future<String> getCurrentLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied ||

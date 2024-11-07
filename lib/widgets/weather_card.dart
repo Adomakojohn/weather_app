@@ -3,7 +3,9 @@ import 'package:weather_app/widgets/city_card.dart';
 
 class WeatherCard extends StatefulWidget {
   final String cityName;
-  const WeatherCard({super.key, required this.cityName});
+  final String temperature;
+  const WeatherCard(
+      {super.key, required this.cityName, required this.temperature});
 
   @override
   State<WeatherCard> createState() => _WeatherCardState();
@@ -12,9 +14,13 @@ class WeatherCard extends StatefulWidget {
 class _WeatherCardState extends State<WeatherCard> {
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
     return Container(
-      height: 262,
-      width: 361,
+      height: screenHeight * 0.316,
+      width: screenWidth * 0.973,
       decoration: const ShapeDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -23,7 +29,7 @@ class _WeatherCardState extends State<WeatherCard> {
             Color(0xFF062D66),
             Color(0xFF316477),
           ],
-          stops: [0.755, 1.0], // Adjusts color transition points
+          stops: [0.910, 1.0], // Adjusts color transition points
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -40,12 +46,12 @@ class _WeatherCardState extends State<WeatherCard> {
               cityName: widget.cityName,
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 50.4,
             left: 15,
             child: Text(
-              '20°C',
-              style: TextStyle(
+              widget.temperature,
+              style: const TextStyle(
                 fontSize: 80,
                 fontWeight: FontWeight.w300,
                 color: Colors.white,
@@ -61,7 +67,182 @@ class _WeatherCardState extends State<WeatherCard> {
                 thickness: 0.2,
               ),
             ),
-          )
+          ),
+          Positioned(
+            bottom: 20,
+            left: 21,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Image.asset(
+                        'assets/icons/humidity.png',
+                        height: 14,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    const Text(
+                      //humidity
+                      '30%',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Image.asset(
+                        'assets/icons/wind-speed.png',
+                        height: 14,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    const Text(
+                      //wind speed
+                      '40 m/s',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 20,
+            right: 21,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Image.asset(
+                        'assets/icons/moon.png',
+                        height: 14,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    const Text(
+                      'Clear',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                // maximum day temperature
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Image.asset(
+                        'assets/icons/arrow_up.png',
+                        height: 14,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    const Text(
+                      '20°',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                // minimum day temperature
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Image.asset(
+                        'assets/icons/arrow-down.png',
+                        height: 14,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    const Text(
+                      '20°',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 21,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Image.asset(
+                        'assets/icons/precipitation.png',
+                        height: 14,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    const Text(
+                      //precipitation
+                      '0mm',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  'Details..',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
