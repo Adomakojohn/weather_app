@@ -48,7 +48,7 @@ class WeatherService {
     return placemarks[0].locality ?? 'Unknown location';
   }
 
-  Future<List<WeatherModel>> getHourlyForecast(
+/*  Future<List<WeatherModel>> getHourlyForecast(
       double latitude, double longitude) async {
     final url = Uri.parse(
       'http://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&exclude=current,minutely,daily,alerts&units=metric&appid=$apiKey',
@@ -81,7 +81,7 @@ class WeatherService {
     } catch (e) {
       throw Exception('Error fetching hourly weather data: $e');
     }
-  }
+  }   */
 
   Future<List<WeatherModel>> getFiveDayForecast(
       double latitude, double longitude) async {

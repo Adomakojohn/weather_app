@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/services/weather_service.dart';
-import 'package:weather_app/widgets/hourly_card.dart';
+import 'package:weather_app/widgets/detail_card.dart';
+
 import 'package:weather_app/widgets/weather_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,34 +14,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Step 1: Initialize WeatherService with your API key
   final WeatherService weatherService =
       WeatherService('1772a4af222b2bfa4cc0f65b3c04714d');
-  WeatherModel? _weather; // For current weather data
-  List<WeatherModel>? _hourlyWeather;
+  WeatherModel? _weather;
 
   @override
   void initState() {
     super.initState();
-    fetchWeather(); // Start fetching current weather data when the widget is created
+    fetchWeather();
   }
 
   Future<void> fetchWeather() async {
     try {
-      // Step 4.1: Get the current location's city name
       String cityName = await weatherService.getCurrentLocation();
-
-      // Step 4.2: Fetch weather data for that city
       final weather = await weatherService.getWeather(cityName);
-
-      // Step 5: Update the state with the new weather data
       setState(() {
         _weather = weather;
       });
     } catch (e) {
-      // Print any error that occurs during data fetching
       print(e);
     }
+  }
+
+  String formatTime(int timestamp) {
+    final dateTime =
+        DateTime.fromMillisecondsSinceEpoch(timestamp * 1000, isUtc: true);
+    return "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
   }
 
   @override
@@ -54,12 +52,10 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Center(
                 child: WeatherCard(
-                  precipitation: '${_weather?.precipitation ?? "..."} mm',
+                  precipitation: '${_weather?.precipitation ?? "0.0"} mm',
                   mainCondition: _weather?.mainCondition ?? "...",
                   windSpeed: _weather != null
                       ? '${_weather!.windSpeed.round()} m/s'
@@ -80,12 +76,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.only(
-                  left: 20,
-                  top: 15,
-                ),
+                padding: EdgeInsets.only(left: 20, top: 15),
                 child: Text(
-                  'Hourly Weather',
+                  'DETAILS',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
@@ -93,27 +86,25 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 6,
+              const SizedBox(height: 6),
+              DetailCard(
+                sunset:
+                    '${_weather != null ? formatTime(_weather!.sunset) : "..."} PM',
+                sunrise:
+                    '${_weather != null ? formatTime(_weather!.sunrise) : "..."} AM',
+                latitude:
+                    _weather != null ? "${_weather!.latitude.round()}" : "...",
+                longitude:
+                    _weather != null ? "${_weather!.longitude.round()}" : "...",
+                seaLevel: _weather != null ? "${_weather!.seaLevel} m" : "...",
+                groundLevel:
+                    _weather != null ? "${_weather!.groundLevel} m" : "...",
+                date: "${_weather?.date ?? "..."}",
+                description: _weather != null ? _weather!.description : "...",
+                feelsLike: _weather != null
+                    ? '${_weather!.feelsLike.round()}°C'
+                    : '...',
               ),
-              Center(
-                child: SizedBox(
-                  height: 950,
-                  width: 405,
-                  child: ListView.builder(
-                    itemCount: 6,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return HourlyCard(
-                        cardCenterName: '00 : 00',
-                        temperature: _weather != null
-                            ? '${_weather!.temperature.round()}°C'
-                            : '...',
-                      );
-                    },
-                  ),
-                ),
-              )
             ],
           ),
         ),

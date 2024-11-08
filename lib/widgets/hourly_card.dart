@@ -4,34 +4,50 @@ import 'package:weather_app/widgets/city_card.dart';
 class HourlyCard extends StatelessWidget {
   final String temperature;
   final String cardCenterName;
-  const HourlyCard(
-      {super.key, required this.temperature, required this.cardCenterName});
+  final bool isCurrentDay;
+
+  const HourlyCard({
+    super.key,
+    required this.temperature,
+    required this.cardCenterName,
+    required this.isCurrentDay, // Accept isCurrentDay as a parameter
+  });
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-
     double screenWidth = screenSize.width;
-    double screenHeight = screenSize.height;
+
+    // Determine whether it's daytime or nighttime (6 AM to 6 PM as day, otherwise night)
+    int currentHour = DateTime.now().hour;
+    bool isDay = currentHour >= 6 && currentHour < 18;
+
+    // Set the color for the current day
+    Color cardColor = isCurrentDay
+        ? (isDay
+            ? Colors.blue
+            : Colors.deepPurple) // Blue if daytime, deep blue if nighttime
+        : const Color(
+            0xFF1C1C1E); // Default color for other days // Blue for current day, gray for others
+
     return Padding(
       padding: const EdgeInsets.all(7.0),
       child: Container(
         height: 142,
         width: screenWidth * 0.999,
         decoration: BoxDecoration(
-          color: const Color(0xFF1C1C1E),
+          color: cardColor, // Apply the selected color
           borderRadius: BorderRadius.circular(15),
         ),
         child: Stack(
           children: [
-            //time
-            //cityname
+            // City name
             const Positioned(
               top: 10,
               left: 10,
               child: CityCard(cityName: 'Kumasi'),
             ),
-            //temperature,
+            // Temperature
             Positioned(
               top: 62.4,
               left: 15,
@@ -58,8 +74,7 @@ class HourlyCard extends StatelessWidget {
                 ),
               ),
             ),
-
-            //humidity
+            // Humidity, Precipitation, etc.
             Positioned(
               top: 20,
               right: 21,
@@ -74,9 +89,7 @@ class HourlyCard extends StatelessWidget {
                           height: 14,
                         ),
                       ),
-                      const SizedBox(
-                        width: 3,
-                      ),
+                      const SizedBox(width: 3),
                       const Text(
                         'Clear',
                         style: TextStyle(
@@ -86,9 +99,7 @@ class HourlyCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Padding(
@@ -98,11 +109,8 @@ class HourlyCard extends StatelessWidget {
                           height: 14,
                         ),
                       ),
-                      const SizedBox(
-                        width: 3,
-                      ),
+                      const SizedBox(width: 3),
                       const Text(
-                        //precipitation
                         '0mm',
                         style: TextStyle(
                           fontSize: 20,
@@ -111,9 +119,7 @@ class HourlyCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   const Text(
                     'Details..',
                     style: TextStyle(
@@ -124,6 +130,7 @@ class HourlyCard extends StatelessWidget {
                 ],
               ),
             ),
+            // Date and Humidity
             Positioned(
               top: 20,
               right: 151,
@@ -131,9 +138,7 @@ class HourlyCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const SizedBox(
-                        width: 3,
-                      ),
+                      const SizedBox(width: 3),
                       Text(
                         cardCenterName,
                         style: const TextStyle(
@@ -143,9 +148,7 @@ class HourlyCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Padding(
@@ -155,11 +158,8 @@ class HourlyCard extends StatelessWidget {
                           height: 14,
                         ),
                       ),
-                      const SizedBox(
-                        width: 3,
-                      ),
+                      const SizedBox(width: 3),
                       const Text(
-                        //humidity
                         '30%',
                         style: TextStyle(
                           fontSize: 20,
@@ -168,9 +168,7 @@ class HourlyCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
                       Padding(
@@ -180,11 +178,8 @@ class HourlyCard extends StatelessWidget {
                           height: 14,
                         ),
                       ),
-                      const SizedBox(
-                        width: 3,
-                      ),
+                      const SizedBox(width: 3),
                       const Text(
-                        //wind speed
                         '40 m/s',
                         style: TextStyle(
                           fontSize: 20,
@@ -196,8 +191,6 @@ class HourlyCard extends StatelessWidget {
                 ],
               ),
             ),
-            //windspeed
-            //precipitation
           ],
         ),
       ),
