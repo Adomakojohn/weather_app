@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/screens/home.dart';
 import 'package:weather_app/screens/tabpage.dart';
 
 void main() {

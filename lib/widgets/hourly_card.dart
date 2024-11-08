@@ -9,11 +9,15 @@ class HourlyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(7.0),
       child: Container(
         height: 142,
-        width: 221,
+        width: screenWidth * 0.999,
         decoration: BoxDecoration(
           color: const Color(0xFF1C1C1E),
           borderRadius: BorderRadius.circular(15),

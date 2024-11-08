@@ -35,17 +35,21 @@ class _FiveDaysAheadPageState extends State<FiveDaysAheadPage> {
       backgroundColor: Color(0xFF000000),
       body: Padding(
         padding: const EdgeInsets.only(left: 8, right: 8),
-        child: Expanded(
-          child: ListView.builder(
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return HourlyCard(
-                  cardCenterName: 'May 05',
-                  temperature: _weather != null
-                      ? '${_weather!.temperature.round()}°C'
-                      : '...');
-            },
-          ),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return HourlyCard(
+                      cardCenterName: 'May 05',
+                      temperature: _weather != null
+                          ? '${_weather!.temperature.round()}°C'
+                          : '...');
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

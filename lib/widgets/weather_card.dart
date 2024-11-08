@@ -4,8 +4,24 @@ import 'package:weather_app/widgets/city_card.dart';
 class WeatherCard extends StatefulWidget {
   final String cityName;
   final String temperature;
-  const WeatherCard(
-      {super.key, required this.cityName, required this.temperature});
+  final String tempMin;
+  final String tempMax;
+  final String windSpeed;
+  final String humidity;
+  final String precipitation;
+  final String mainCondition;
+
+  const WeatherCard({
+    super.key,
+    required this.cityName,
+    required this.mainCondition,
+    required this.temperature,
+    required this.humidity,
+    required this.precipitation,
+    required this.tempMax,
+    required this.tempMin,
+    required this.windSpeed,
+  });
 
   @override
   State<WeatherCard> createState() => _WeatherCardState();
@@ -86,10 +102,10 @@ class _WeatherCardState extends State<WeatherCard> {
                     const SizedBox(
                       width: 3,
                     ),
-                    const Text(
+                    Text(
                       //humidity
-                      '30%',
-                      style: TextStyle(
+                      widget.humidity,
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
@@ -111,10 +127,10 @@ class _WeatherCardState extends State<WeatherCard> {
                     const SizedBox(
                       width: 3,
                     ),
-                    const Text(
+                    Text(
                       //wind speed
-                      '40 m/s',
-                      style: TextStyle(
+                      widget.windSpeed,
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
@@ -141,9 +157,9 @@ class _WeatherCardState extends State<WeatherCard> {
                     const SizedBox(
                       width: 3,
                     ),
-                    const Text(
-                      'Clear',
-                      style: TextStyle(
+                    Text(
+                      widget.mainCondition,
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
@@ -166,9 +182,9 @@ class _WeatherCardState extends State<WeatherCard> {
                     const SizedBox(
                       width: 3,
                     ),
-                    const Text(
-                      '20°',
-                      style: TextStyle(
+                    Text(
+                      widget.tempMax,
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
@@ -191,9 +207,9 @@ class _WeatherCardState extends State<WeatherCard> {
                     const SizedBox(
                       width: 3,
                     ),
-                    const Text(
-                      '20°',
-                      style: TextStyle(
+                    Text(
+                      widget.tempMin,
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
@@ -220,10 +236,10 @@ class _WeatherCardState extends State<WeatherCard> {
                     const SizedBox(
                       width: 3,
                     ),
-                    const Text(
+                    Text(
                       //precipitation
-                      '0mm',
-                      style: TextStyle(
+                      widget.precipitation,
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
