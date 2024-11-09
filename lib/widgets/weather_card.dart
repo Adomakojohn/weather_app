@@ -10,10 +10,12 @@ class WeatherCard extends StatefulWidget {
   final String humidity;
   final String precipitation;
   final String mainCondition;
+  final String conditionIcon;
 
   const WeatherCard({
     super.key,
     required this.cityName,
+    required this.conditionIcon,
     required this.mainCondition,
     required this.temperature,
     required this.humidity,
@@ -150,8 +152,8 @@ class _WeatherCardState extends State<WeatherCard> {
                     Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: Image.asset(
-                        'assets/icons/moon.png',
-                        height: 14,
+                        widget.conditionIcon,
+                        height: 23,
                       ),
                     ),
                     const SizedBox(
@@ -249,13 +251,13 @@ class _WeatherCardState extends State<WeatherCard> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
+                /* const Text(
                   'Details..',
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                   ),
-                ),
+                ),  */
               ],
             ),
           ),

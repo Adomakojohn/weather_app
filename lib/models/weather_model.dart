@@ -1,12 +1,3 @@
-//sunset
-//sunrise
-//lattitude
-//longitude
-//sea level
-//ground level
-//date
-// description
-// feels like
 class WeatherModel {
   final String cityName;
   final double temperature;
@@ -57,23 +48,30 @@ class WeatherModel {
 
     return WeatherModel(
       cityName: json['name'] ?? 'Unknown location',
-      temperature: json['main']['temp'].toDouble(),
+      temperature: double.parse(json['main']['temp'].toStringAsFixed(2)),
       mainCondition: json['weather'][0]['main'],
       humidity: json['main']['humidity'],
-      precipitation: json['rain'] != null ? (json['rain']['1h'] ?? 0.0) : 0.0,
-      tempMax: json['main']['temp_max'].toDouble(),
-      tempMin: json['main']['temp_min'].toDouble(),
-      windSpeed: json['wind']['speed'].toDouble(),
+      precipitation: double.parse(
+          (json['rain'] != null ? (json['rain']['1h'] ?? 0.0) : 0.0)
+              .toStringAsFixed(2)),
+      tempMax: double.parse(json['main']['temp_max'].toStringAsFixed(2)),
+      tempMin: double.parse(json['main']['temp_min'].toStringAsFixed(2)),
+      windSpeed: double.parse(json['wind']['speed'].toStringAsFixed(2)),
       time: json['dt'],
       sunset: json['sys']['sunset'],
       sunrise: json['sys']['sunrise'],
-      latitude: json['coord']['lat'].toDouble(),
-      longitude: json['coord']['lon'].toDouble(),
+      latitude: double.parse(json['coord']['lat'].toStringAsFixed(2)),
+      longitude: double.parse(json['coord']['lon'].toStringAsFixed(2)),
       seaLevel: json['main']['sea_level'] ?? 0,
       groundLevel: json['main']['grnd_level'] ?? 0,
       date: formatDate(json['dt']),
       description: json['weather'][0]['description'],
-      feelsLike: json['main']['feels_like'].toDouble(),
+      feelsLike: double.parse(json['main']['feels_like'].toStringAsFixed(2)),
     );
+  }
+
+  @override
+  String toString() {
+    return 'WeatherModel(cityName: $cityName, temperature: $temperature, windSpeed: $windSpeed, humidity: $humidity, description: $description, precipitation: $precipitation)';
   }
 }

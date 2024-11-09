@@ -42,6 +42,27 @@ class _HomePageState extends State<HomePage> {
     return "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
   }
 
+  String getWeatherIcon(String? mainCondition) {
+    if (mainCondition == null) return 'assets/icons/sunny.png';
+    switch (mainCondition.toLowerCase()) {
+      case 'clouds':
+      case 'mist':
+      case 'haze':
+      case 'dust':
+      case 'fog':
+        return 'assets/icons/cloudy.png';
+      case 'rain':
+      case 'drizzle':
+      case 'shower rain':
+      case 'thunderstorm':
+        return 'assets/icons/rain.png';
+      case 'clear':
+        return 'assets/icons/sunny.png';
+      default:
+        return 'assets/icons/sunny.png';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +76,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 10),
               Center(
                 child: WeatherCard(
+                  conditionIcon: getWeatherIcon(_weather?.mainCondition),
                   precipitation: '${_weather?.precipitation ?? "0.0"} mm',
                   mainCondition: _weather?.mainCondition ?? "...",
                   windSpeed: _weather != null
@@ -70,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                       ? '${_weather!.humidity.round()}%'
                       : '...',
                   temperature: _weather != null
-                      ? '${_weather!.temperature.round()}°C'
+                      ? '${_weather!.temperature.toStringAsFixed(1)}°C'
                       : '...',
                   cityName: _weather?.cityName ?? "Loading city...",
                 ),
@@ -99,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                 seaLevel: _weather != null ? "${_weather!.seaLevel} m" : "...",
                 groundLevel:
                     _weather != null ? "${_weather!.groundLevel} m" : "...",
-                date: "${_weather?.date ?? "..."}",
+                date: _weather?.date ?? "...",
                 description: _weather != null ? _weather!.description : "...",
                 feelsLike: _weather != null
                     ? '${_weather!.feelsLike.round()}°C'

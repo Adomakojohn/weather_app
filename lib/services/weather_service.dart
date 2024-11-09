@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class WeatherService {
   static const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather';
+  static const FORECAST_URL = 'http://api.openweathermap.org/data/2.5/forecast';
   final String apiKey;
 
   WeatherService(this.apiKey);
@@ -86,16 +87,67 @@ class WeatherService {
   Future<List<WeatherModel>> getFiveDayForecast(
       double latitude, double longitude) async {
     final url = Uri.parse(
-      'http://api.openweathermap.org/data/2.5/forecast?lat=$latitude&lon=$longitude&units=metric&appid=$apiKey',
-    );
-
+        '$FORECAST_URL?lat=$latitude&lon=$longitude&units=metric&appid=$apiKey');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       final List<dynamic> forecastData = data['list'];
 
-      return forecastData.map((entry) => WeatherModel.fromJson(entry)).toList();
+      Map<String, List<dynamic>> dailyData = {};
+
+      for (var entry in forecastData) {
+        final dateTime =
+            DateTime.fromMillisecondsSinceEpoch(entry['dt'] * 1000);
+        final dateKey = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
+        dailyData.putIfAbsent(dateKey, () => []).add(entry);
+      }
+
+      List<WeatherModel> dailyForecasts = dailyData.entries.map((dayEntry) {
+        final dailyEntries = dayEntry.value;
+        double tempSum = 0;
+        double humiditySum = 0;
+        double windSpeedSum = 0;
+        int count = dailyEntries.length;
+
+        for (var entry in dailyEntries) {
+          tempSum += entry['main']['temp'];
+          humiditySum += entry['main']['humidity'];
+          windSpeedSum += entry['wind']['speed'];
+        }
+
+        final sampleEntry = dailyEntries.first;
+        return WeatherModel(
+          cityName: data['city']['name'],
+          temperature: double.parse(
+              (tempSum / count).toStringAsFixed(2)), // Round temperature
+          mainCondition: sampleEntry['weather'][0]['main'],
+          time: sampleEntry['dt'],
+          tempMin: double.parse(sampleEntry['main']['temp_min']
+              .toStringAsFixed(2)), // Round tempMin
+          tempMax: double.parse(sampleEntry['main']['temp_max']
+              .toStringAsFixed(2)), // Round tempMax
+          humidity: (humiditySum / count).round(),
+          windSpeed: double.parse(
+              (windSpeedSum / count).toStringAsFixed(2)), // Round windSpeed
+          precipitation: double.parse((sampleEntry['rain']?['3h'] ?? 0.0)
+              .toStringAsFixed(2)), // Round precipitation
+          sunset: data['city']['sunset'],
+          sunrise: data['city']['sunrise'],
+          latitude: double.parse(data['city']['coord']['lat']
+              .toStringAsFixed(2)), // Round latitude
+          longitude: double.parse(data['city']['coord']['lon']
+              .toStringAsFixed(2)), // Round longitude
+          seaLevel: sampleEntry['main']['sea_level'] ?? 0,
+          groundLevel: sampleEntry['main']['grnd_level'] ?? 0,
+          date: dayEntry.key,
+          description: sampleEntry['weather'][0]['description'],
+          feelsLike: double.parse(sampleEntry['main']['feels_like']
+              .toStringAsFixed(2)), // Round feelsLike
+        );
+      }).toList();
+
+      return dailyForecasts;
     } else {
       throw Exception('Failed to load 5-day weather forecast');
     }
