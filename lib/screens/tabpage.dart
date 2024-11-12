@@ -15,6 +15,9 @@ class WeatherTabScreen extends StatelessWidget {
           top: true,
           child: Column(
             children: [
+              const SizedBox(
+                height: 15,
+              ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),

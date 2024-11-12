@@ -33,7 +33,7 @@ class _FiveDaysAheadPageState extends State<FiveDaysAheadPage> {
 
       // Log the forecast data to check its structure and size
       print(forecast);
-      if (forecast == null || forecast.isEmpty) {
+      if (forecast.isEmpty) {
         print("No forecast data received");
       } else {
         print("Forecast data: ${forecast.length} items");
@@ -95,8 +95,8 @@ class _FiveDaysAheadPageState extends State<FiveDaysAheadPage> {
     // Check if the forecast data has enough entries to display (5 days)
     if (_forecast!.length < 5) {
       print("Incomplete forecast data");
-      return Scaffold(
-        backgroundColor: const Color(0xFF000000),
+      return const Scaffold(
+        backgroundColor: Color(0xFF000000),
         body: Center(child: Text("Incomplete forecast data")),
       );
     }

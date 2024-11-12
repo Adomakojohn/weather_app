@@ -147,7 +147,7 @@ class HourlyCard extends StatelessWidget {
             // Date and Humidity
             Positioned(
               top: 20,
-              right: 151,
+              right: 137,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
